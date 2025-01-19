@@ -33,7 +33,8 @@ dbClient.connect()
 
 
 app.get('/:lf/questions', async (req, res) => {
-  const { lf } = req.params;  
+  const { lf } = req.params;
+  console.log("lf: " + lf); 
   try {
       const result = await dbClient.query('SELECT * FROM "fragen" WHERE lf = $1', [lf]);
       const data = result.rows;

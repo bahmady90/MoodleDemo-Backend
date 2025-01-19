@@ -1,32 +1,21 @@
-export function getQuiz(questions){
+export function getQuiz(questions) {
+    if (questions.length < 20) {
+        throw new Error("Not enough questions to generate a quiz of 20 items.");
+    }
+
     const testData = [];
-    while(true){
+    const usedIds = new Set();
+
+    while (testData.length < 20) {
         const randomNumber = Math.floor(Math.random() * questions.length);
         const randomRow = questions[randomNumber];
-        const randomRowId = questions[randomNumber].id;
-        if(!includesId(randomRowId, testData)){
-          testData.push(randomRow);
-          const indexToRemove = questions.findIndex((row) => row.id !== randomRowId);
-          if(indexToRemove !== -1){
-              questions.splice(indexToRemove, 1)
-          }
-        } 
-    
-        if(testData.length === 20){
-          break;
+        const randomRowId = randomRow.id;
+
+        if (!usedIds.has(randomRowId)) {
+            testData.push(randomRow);
+            usedIds.add(randomRowId);
         }
-    
-      }
-  
-      return testData;
-  
-      function includesId(randomRowId, testData){
-          let includes = false;
-          testData.forEach((row) => {
-              if(row.id === randomRowId){
-                  includes = true;
-              }
-          })
-          return includes;
-      }
-  }
+    }
+
+    return testData;
+}
