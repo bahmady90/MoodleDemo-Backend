@@ -105,12 +105,11 @@ app.post("/questions", async (req, res) => {
 
 app.patch("/questions", async (req, res) => {
   const fullQuestion = req.body;
-  console.log(fullQuestion);
-
-  const { id, lf, type, question, answers, rightAnswers } = fullQuestion;
+ 
+  const { id, lf, type, question, answers, rightAnswers, thema, apOne} = fullQuestion;
 
   try {
-      const query = `UPDATE "fragen" SET lf = $1, type = $2, question = $3, answers = $4, "rightAnswers" = $5 WHERE id = $6 RETURNING *;`
+      const query = `UPDATE "fragen" SET lf = $1, type = $2, question = $3, answers = $4, "rightAnswers" = $5, "thema" = $6, "apOne" = $7 WHERE id = $6 RETURNING *;`
 
       const result = await dbClient.query(query, [
         lf,
@@ -118,6 +117,8 @@ app.patch("/questions", async (req, res) => {
         question,
         JSON.stringify(answers),
         JSON.stringify(rightAnswers),
+        thema,
+        apOne,
         id, 
       ]);
 
