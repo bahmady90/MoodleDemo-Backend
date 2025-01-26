@@ -80,11 +80,11 @@ app.post("/questions", async (req, res) => {
   console.log(fullQuestion)
 
   try {
-    const { lf, type, question, answers, rightAnswers } = fullQuestion;
+    const { lf, type, question, answers, rightAnswers, thema, apOne  } = fullQuestion;
 
     const query = `
-      INSERT INTO "fragen" (lf, type, question, answers, "rightAnswers")
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO "fragen" (lf, type, question, answers, "rightAnswers", thema, "apOne")
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
 
@@ -94,6 +94,7 @@ app.post("/questions", async (req, res) => {
       question,
       JSON.stringify(answers),
       JSON.stringify(rightAnswers),
+      thema, apOne
     ]);
 
     res.status(201).json({ message: "Question added successfully", data: result.rows[0] });
@@ -105,11 +106,12 @@ app.post("/questions", async (req, res) => {
 
 app.patch("/questions", async (req, res) => {
   const fullQuestion = req.body;
- 
-  const { id, lf, type, question, answers, rightAnswers, thema, apOne} = fullQuestion;
+  console.log(fullQuestion);
+
+  const { id, lf, type, question, answers, rightAnswers, thema, apOne } = fullQuestion;
 
   try {
-      const query = `UPDATE "fragen" SET lf = $1, type = $2, question = $3, answers = $4, "rightAnswers" = $5, "thema" = $6, "apOne" = $7 WHERE id = $6 RETURNING *;`
+      const query = `UPDATE "fragen" SET lf = $1, type = $2, question = $3, answers = $4, "rightAnswers" = $5, thema = $6, "apOne" = $7 WHERE id = $8 RETURNING *;`
 
       const result = await dbClient.query(query, [
         lf,
